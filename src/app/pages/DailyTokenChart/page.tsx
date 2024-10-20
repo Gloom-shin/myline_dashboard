@@ -32,6 +32,10 @@ interface DailyData {
 }
 
 export default function DailyTokenChart() {
+  const [todayData, setTodayData] = useState<{
+    totalTokens: number;
+    totalPrice: number;
+  } | null>(null);
   const [dailyData, setDailyData] = useState<DailyData | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -45,6 +49,20 @@ export default function DailyTokenChart() {
         }
         const data = await res.json();
         setDailyData(data.dailyData);
+
+        // 전날 날짜 계산
+        const yesterday = new Date();
+        yesterday.setDate(yesterday.getDate() - 1); // 오늘에서 하루를 뺌
+        const yesterdayString = yesterday.toISOString().split("T")[0]; // YYYY-MM-DD 형식으로 변환
+        if (data.dailyData[yesterdayString]) {
+          setTodayData({
+            totalTokens: data.dailyData[yesterdayString].totalTokens,
+            totalPrice: data.dailyData[yesterdayString].totalPrice,
+          });
+        } else {
+          setTodayData({ totalTokens: 0, totalPrice: 0 }); // 금일 데이터가 없으면 0으로 설정
+        }
+
         setLoading(false);
       } catch (error: unknown) {
         if (error instanceof Error) {
@@ -56,7 +74,7 @@ export default function DailyTokenChart() {
       }
     };
 
-    fetchDailyData();
+    fetchDailyData(); // 일별 데이터를 가져옴
   }, []);
 
   if (loading) return <p className="text-center text-gray-500">로딩 중...</p>;
@@ -106,6 +124,29 @@ export default function DailyTokenChart() {
 
   return (
     <div className="max-w-4xl mx-auto p-6">
+      {/* 두 칸으로 나눈 레이아웃 */}
+      <div className="flex justify-between space-x-4 mb-8">
+        {/* 왼쪽: 전날 사용한 총 비용 */}
+        <div className="flex-1 bg-white shadow-md rounded-lg p-6">
+          <h2 className="text-xl font-semibold text-gray-700 mb-4">
+            전날 사용한 총 비용
+          </h2>
+          <p className="text-2xl font-bold text-blue-600">
+            ${todayData?.totalPrice.toLocaleString() || 0}
+          </p>
+        </div>
+
+        {/* 오른쪽: 전날 사용한 총 토큰 */}
+        <div className="flex-1 bg-white shadow-md rounded-lg p-6">
+          <h2 className="text-xl font-semibold text-gray-700 mb-4">
+            전날 사용한 총 토큰
+          </h2>
+          <p className="text-2xl font-bold text-green-600">
+            {todayData?.totalTokens.toLocaleString() || 0} Tokens
+          </p>
+        </div>
+      </div>
+
       <h1 className="text-2xl font-bold text-gray-800 mb-6">
         일별 토큰 사용량 및 비용
       </h1>

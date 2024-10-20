@@ -10,7 +10,6 @@ export default function Home() {
         대시보드
       </h1>
       <DailyTokenChart />
-
       <div className="flex justify-center space-x-4 mb-8">
         {/* 월별 누적 차트 페이지로 이동하는 버튼 */}
         <Link
