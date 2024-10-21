@@ -2,7 +2,7 @@
   "crons": [
     {
       "path": "/api/updateTokens",
-      "schedule": "53 4 * * *"
+      "schedule": "0 15 * * *"
     }
   ]
 }
