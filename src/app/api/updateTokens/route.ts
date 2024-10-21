@@ -2,6 +2,7 @@
 import OpenAI from "openai";
 import { NextResponse } from "next/server";
 import { supabase } from "@/supabaseClient";
+export const dynamic = "force-dynamic";
 
 const openai = new OpenAI({
   apiKey: process.env.NEXT_PUBLIC_OPENAI_API_KEY || "", // 기본값으로 빈 문자열 추가
