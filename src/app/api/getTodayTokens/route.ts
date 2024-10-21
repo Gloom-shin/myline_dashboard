@@ -25,7 +25,14 @@ export async function GET() {
     }
 
     if (!logs || logs.length === 0) {
-      return NextResponse.json({ totalTokens: 0 });
+      return NextResponse.json(
+        { totalTokens: 0, totalCost: 0 },
+        {
+          headers: {
+            "Cache-Control": "public, max-age=60", // 1분 동안 캐시 유지
+          },
+        }
+      );
     }
 
     // 2. OpenAI API를 통해 각 thread_id의 토큰 사용량 계산
@@ -52,11 +59,26 @@ export async function GET() {
     const outputCost = (totalOutputTokens / 1_000_000) * outputCostPerMillion;
     const totalCost = inputCost + outputCost;
     const totalTokens = totalInputTokens + totalOutputTokens;
-    return NextResponse.json({
-      totalTokens,
-      totalCost,
-    });
+    return NextResponse.json(
+      {
+        totalTokens,
+        totalCost,
+      },
+      {
+        headers: {
+          "Cache-Control": "public, max-age=60", // 1분 동안 캐시 유지
+        },
+      }
+    );
   } catch (error: any) {
-    return NextResponse.json({ error: error.message }, { status: 500 });
+    return NextResponse.json(
+      { error: error.message },
+      {
+        status: 500,
+        headers: {
+          "Cache-Control": "public, max-age=60", // 1분 동안 캐시 유지
+        },
+      }
+    );
   }
 }
