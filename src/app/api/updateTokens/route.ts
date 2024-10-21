@@ -33,10 +33,6 @@ export async function GET() {
       throw new Error(`Supabase error: ${error.message}`);
     }
 
-    if (!data || data.length === 0) {
-      return NextResponse.json({ message: "No data for today" });
-    }
-
     // 2. OpenAI API를 사용하여 토큰 계산
     const threadTokenCounts: {
       [key: string]: {
