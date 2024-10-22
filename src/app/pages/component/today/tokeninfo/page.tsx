@@ -1,7 +1,6 @@
 "use client";
 
 import { useEffect, useState } from "react";
-export const fetchCache = "force-no-store";
 
 export default function TodayTokenInfo() {
   const [todayTokens, setTodayTokens] = useState<number | null>(null);
