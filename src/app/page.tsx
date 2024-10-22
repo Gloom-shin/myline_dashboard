@@ -4,6 +4,7 @@
 import Link from "next/link";
 import DailyTokenChart from "./pages/component/daily/tokenchart/page";
 import TodayTokenInfo from "./pages/component/today/tokeninfo/page";
+export const fetchCache = "force-no-store";
 
 export default function Home() {
   return (
