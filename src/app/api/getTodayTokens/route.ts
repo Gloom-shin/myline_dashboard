@@ -30,7 +30,8 @@ export async function GET() {
         { totalTokens: 0, totalCost: 0 },
         {
           headers: {
-            "Cache-Control": "public, max-age=60", // 1분 동안 캐시 유지
+            "Cache-Control":
+              "no-store, no-cache, must-revalidate, proxy-revalidate", // 캐시 방지
           },
         }
       );
@@ -67,7 +68,8 @@ export async function GET() {
       },
       {
         headers: {
-          "Cache-Control": "public, max-age=60", // 1분 동안 캐시 유지
+          "Cache-Control":
+            "no-store, no-cache, must-revalidate, proxy-revalidate", // 캐시 방지
         },
       }
     );
@@ -77,7 +79,8 @@ export async function GET() {
       {
         status: 500,
         headers: {
-          "Cache-Control": "public, max-age=60", // 1분 동안 캐시 유지
+          "Cache-Control":
+            "no-store, no-cache, must-revalidate, proxy-revalidate", // 캐시 방지
         },
       }
     );

@@ -10,8 +10,25 @@ export async function GET() {
       throw new Error(`Supabase error: ${error.message}`);
     }
     console.log(data);
-    return NextResponse.json({ tokenTypeData: data });
+    return NextResponse.json(
+      { tokenTypeData: data },
+      {
+        headers: {
+          "Cache-Control":
+            "no-store, no-cache, must-revalidate, proxy-revalidate", // 캐시 방지
+        },
+      }
+    );
   } catch (error: any) {
-    return NextResponse.json({ error: error.message }, { status: 500 });
+    return NextResponse.json(
+      { error: error.message },
+      {
+        status: 500,
+        headers: {
+          "Cache-Control":
+            "no-store, no-cache, must-revalidate, proxy-revalidate", // 캐시 방지
+        },
+      }
+    );
   }
 }
