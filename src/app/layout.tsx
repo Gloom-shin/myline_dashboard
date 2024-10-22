@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import "./globals.css";
 import Link from "next/link"; // Next.js Link 컴포넌트 import
+export const fetchCache = "force-no-store";
 
 export const metadata: Metadata = {
   title: "Create Next App",
