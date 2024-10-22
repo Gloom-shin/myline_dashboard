@@ -2,6 +2,7 @@
 import { NextResponse } from "next/server";
 import { supabase } from "@/supabaseClient";
 import OpenAI from "openai";
+import { getKoreanDate } from "@/app/utils/dateUtils";
 
 // OpenAI 설정
 const openai = new OpenAI({
@@ -11,7 +12,7 @@ const openai = new OpenAI({
 export async function GET() {
   try {
     // 오늘 날짜 생성 (YYYY-MM-DD 형식)
-    const today = new Date().toISOString().split("T")[0];
+    const today = getKoreanDate();
 
     // 1. logs 테이블에서 created_at이 오늘인 thread_id 가져오기
     const { data: logs, error: logsError } = await supabase

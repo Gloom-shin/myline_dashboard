@@ -30,6 +30,20 @@ interface DailyData {
     totalPrice: number;
   };
 }
+const getKoreanYesterday = () => {
+  const yesterday = new Date();
+  yesterday.setDate(yesterday.getDate() - 1); // 어제로 날짜 설정
+
+  // 한국 시간대로 변환하여 어제 날짜 생성
+  const koreanYesterday = new Intl.DateTimeFormat("en-CA", {
+    timeZone: "Asia/Seoul",
+    year: "numeric",
+    month: "2-digit",
+    day: "2-digit",
+  }).format(yesterday);
+
+  return koreanYesterday; // YYYY-MM-DD 형식
+};
 
 export default function DailyTokenChart() {
   const [todayData, setTodayData] = useState<{
@@ -51,9 +65,7 @@ export default function DailyTokenChart() {
         setDailyData(data.dailyData);
 
         // 전날 날짜 계산
-        const yesterday = new Date();
-        yesterday.setDate(yesterday.getDate() - 1); // 오늘에서 하루를 뺌
-        const yesterdayString = yesterday.toISOString().split("T")[0]; // YYYY-MM-DD 형식으로 변환
+        const yesterdayString = getKoreanYesterday();
         if (data.dailyData[yesterdayString]) {
           setTodayData({
             totalTokens: data.dailyData[yesterdayString].totalTokens,
