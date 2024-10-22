@@ -3,6 +3,7 @@ import { NextResponse } from "next/server";
 import { supabase } from "@/supabaseClient";
 import OpenAI from "openai";
 import { getKoreanDate } from "@/app/utils/dateUtils";
+export const fetchCache = "force-no-store";
 
 // OpenAI 설정
 const openai = new OpenAI({

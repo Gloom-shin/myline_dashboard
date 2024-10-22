@@ -23,6 +23,7 @@ ChartJS.register(
   Tooltip,
   Legend
 );
+export const fetchCache = "force-no-store";
 
 interface DailyData {
   [key: string]: {
