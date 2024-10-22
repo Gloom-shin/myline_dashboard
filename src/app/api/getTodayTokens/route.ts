@@ -27,17 +27,7 @@ export async function GET() {
     }
 
     if (!logs || logs.length === 0) {
-      return NextResponse.json(
-        { totalTokens: 0, totalCost: 0 },
-        {
-          headers: {
-            "Cache-Control":
-              "no-store, no-cache, must-revalidate, proxy-revalidate", // 캐시 방지
-            Pragma: "no-cache",
-            Expires: "0",
-          },
-        }
-      );
+      return NextResponse.json({ totalTokens: 0, totalCost: 0 });
     }
 
     // 2. OpenAI API를 통해 각 thread_id의 토큰 사용량 계산
