@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
 import { supabase } from "@/supabaseClient";
+export const fetchCache = "force-no-store";
 
 export async function GET() {
   try {
