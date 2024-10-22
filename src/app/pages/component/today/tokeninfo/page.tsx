@@ -11,7 +11,9 @@ export default function TodayTokenInfo() {
   useEffect(() => {
     const fetchTodayTokens = async () => {
       try {
-        const res = await fetch("/api/getTodayTokens", { cache: "no-store" });
+        const res = await fetch("/api/getTodayTokens", {
+          next: { revalidate: 10 }, // 10초 후 데이터 재검증
+        });
         if (!res.ok) {
           throw new Error("Failed to fetch today's token data");
         }
