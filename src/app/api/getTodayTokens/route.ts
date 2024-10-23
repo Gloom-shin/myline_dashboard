@@ -12,11 +12,10 @@ const openai = new OpenAI({
 export async function POST(req: Request) {
   try {
     // POST 요청 본문에서 필요한 데이터 가져오기 (필요하다면)
-    const body = await req.json();
-    const { date } = body; // 요청에 특정 날짜를 포함시키고 싶은 경우 (선택 사항)
+    // const body = await req.json();
 
     // 오늘 날짜 생성 (YYYY-MM-DD 형식) 또는 요청에서 받은 날짜 사용
-    const today = date || getKoreanDate();
+    const today = getKoreanDate();
 
     // 1. logs 테이블에서 created_at이 오늘인 thread_id 가져오기
     const { data: logs, error: logsError } = await supabase
