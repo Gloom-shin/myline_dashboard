@@ -23,7 +23,6 @@ ChartJS.register(
   Tooltip,
   Legend
 );
-export const fetchCache = "force-no-store";
 
 interface MonthlyData {
   [key: string]: {
@@ -40,10 +39,22 @@ export default function MonthlyTokenChart() {
   useEffect(() => {
     const fetchMonthlyData = async () => {
       try {
-        const res = await fetch("/api/getMonthlyTokens"); // 월별 데이터를 가져오는 API 호출
+        // POST 요청을 통해 데이터 요청
+        const res = await fetch("/api/getMonthlyTokens", {
+          method: "POST", // POST 메서드로 변경
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            // 필요시 본문에 데이터를 추가
+            requestMonth: new Date().toISOString(), // 예시: 현재 날짜 포함
+          }),
+        });
+
         if (!res.ok) {
           throw new Error("월별 데이터를 가져오는데 실패했습니다.");
         }
+
         const data = await res.json();
         setMonthlyData(data.monthlyData);
         setLoading(false);
@@ -57,7 +68,7 @@ export default function MonthlyTokenChart() {
       }
     };
 
-    fetchMonthlyData();
+    fetchMonthlyData(); // 월별 데이터를 가져옴
   }, []);
 
   if (loading) return <p className="text-center text-gray-500">로딩 중...</p>;

@@ -1,11 +1,14 @@
 import { NextResponse } from "next/server";
 import { supabase } from "@/supabaseClient";
-export const fetchCache = "force-no-store";
 
-export async function GET() {
+export async function POST(req: Request) {
   try {
-    // 현재 날짜 기준으로 월의 시작일과 마지막일 계산
-    const today = new Date();
+    // POST 요청에서 받은 데이터 처리 (필요할 경우)
+    const body = await req.json();
+    const { customDate } = body; // 요청에서 특정 날짜를 받는 경우 사용 가능
+
+    // 현재 날짜 기준으로 월의 시작일과 마지막일 계산 (또는 customDate 사용)
+    const today = customDate ? new Date(customDate) : new Date();
     const firstDayOfMonth = new Date(
       today.getFullYear(),
       today.getMonth(),

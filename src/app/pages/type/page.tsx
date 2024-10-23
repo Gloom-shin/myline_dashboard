@@ -43,10 +43,22 @@ export default function AdminPage() {
   useEffect(() => {
     const fetchTokenData = async () => {
       try {
-        const res = await fetch("/api/getTokenTypeData");
+        // POST 요청을 통해 데이터 요청
+        const res = await fetch("/api/getTokenTypeData", {
+          method: "POST", // POST 요청으로 변경
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            // 필요한 데이터를 요청 본문에 추가할 수 있습니다. 예: 특정 날짜
+            requestDate: new Date().toISOString(),
+          }),
+        });
+
         if (!res.ok) {
           throw new Error("토큰 타입별 데이터를 가져오는데 실패했습니다.");
         }
+
         const data = await res.json();
         setTokenTypeData(data.tokenTypeData);
         setLoading(false);
@@ -70,13 +82,11 @@ export default function AdminPage() {
   const getChartData = (type: string) => {
     const filteredData =
       tokenTypeData?.filter((d) => d.token_type === type) || [];
-    // console.log(filteredData);
 
     // 날짜 순으로 정렬
     const sortedData = filteredData.sort(
       (a, b) => new Date(a.date).getTime() - new Date(b.date).getTime()
     );
-    console.log(sortedData);
 
     return {
       labels: sortedData.map((d) => d.date), // X축에 날짜 표시

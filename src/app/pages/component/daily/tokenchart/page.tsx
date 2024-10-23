@@ -23,7 +23,6 @@ ChartJS.register(
   Tooltip,
   Legend
 );
-export const fetchCache = "force-no-store";
 
 interface DailyData {
   [key: string]: {
@@ -58,7 +57,18 @@ export default function DailyTokenChart() {
   useEffect(() => {
     const fetchDailyData = async () => {
       try {
-        const res = await fetch("/api/getDailyTokens"); // 일별 데이터를 가져오는 API 호출
+        // POST 요청을 통해 데이터 요청
+        const res = await fetch("/api/getDailyTokens", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            // 필요 시 데이터를 body로 전달
+            requestDate: new Date().toISOString(),
+          }),
+        });
+
         if (!res.ok) {
           throw new Error("일별 데이터를 가져오는데 실패했습니다.");
         }

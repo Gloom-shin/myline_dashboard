@@ -1,9 +1,12 @@
 import { NextResponse } from "next/server";
 import { supabase } from "@/supabaseClient";
-export const fetchCache = "force-no-store";
 
-export async function GET() {
+export async function POST(req: Request) {
   try {
+    // 필요시 요청에서 전달받은 데이터 처리
+    const body = await req.json();
+    const { requestMonth } = body; // 예시로 특정 월을 요청하는 경우
+
     // Supabase에서 모든 데이터를 월별로 그룹화하여 가져옴
     const { data, error } = await supabase
       .from("tokens")
