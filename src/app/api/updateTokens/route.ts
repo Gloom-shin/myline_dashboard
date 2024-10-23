@@ -24,7 +24,7 @@ export async function GET() {
   try {
     // 1. Supabase에서 어제 날짜 데이터를 가져옴
     const today = getKoreanDate(); // YYYY-MM-DD 포맷으로 오늘 날짜 생성
-    // const today = "2024-10-14";
+    // const today = "2024-10-22";
     const { data, error } = await supabase
       .from("logs")
       .select("*")
