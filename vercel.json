@@ -3,15 +3,6 @@
     {
       "path": "/api/updateTokens",
       "schedule": "0 15 * * *"
-    },
-    {
-      "source": "/api/(.*)",
-      "headers": [
-        {
-          "key": "Vercel-CDN-Cache-Control",
-          "value": "no-store"
-        }
-      ]
     }
   ]
 }
