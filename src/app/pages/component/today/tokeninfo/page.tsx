@@ -13,9 +13,13 @@ export default function TodayTokenInfo() {
     try {
       setLoading(true); // 로딩 상태 활성화
 
-      const timestamp = new Date().getTime(); // 현재 시간을 밀리초로 가져오기
+      const res = await fetch(`/api/getTodayTokens`, {
+        method: "POST", // POST 요청으로 변경
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
 
-      const res = await fetch(`/api/getTodayTokens?timestamp=${timestamp}`);
       if (!res.ok) {
         throw new Error("Failed to fetch today's token data");
       }

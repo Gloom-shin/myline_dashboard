@@ -3,17 +3,20 @@ import { NextResponse } from "next/server";
 import { supabase } from "@/supabaseClient";
 import OpenAI from "openai";
 import { getKoreanDate } from "@/app/utils/dateUtils";
-export const fetchCache = "force-no-store";
 
 // OpenAI 설정
 const openai = new OpenAI({
   apiKey: process.env.NEXT_PUBLIC_OPENAI_API_KEY || "",
 });
 
-export async function GET() {
+export async function POST(req: Request) {
   try {
-    // 오늘 날짜 생성 (YYYY-MM-DD 형식)
-    const today = getKoreanDate();
+    // POST 요청 본문에서 필요한 데이터 가져오기 (필요하다면)
+    const body = await req.json();
+    const { date } = body; // 요청에 특정 날짜를 포함시키고 싶은 경우 (선택 사항)
+
+    // 오늘 날짜 생성 (YYYY-MM-DD 형식) 또는 요청에서 받은 날짜 사용
+    const today = date || getKoreanDate();
 
     // 1. logs 테이블에서 created_at이 오늘인 thread_id 가져오기
     const { data: logs, error: logsError } = await supabase
@@ -46,6 +49,7 @@ export async function GET() {
         }
       }
     }
+
     // 3. 비용 계산
     const inputCostPerMillion = 2.5; // 1M input tokens = $2.50
     const outputCostPerMillion = 10.0; // 1M output tokens = $10.00
@@ -54,6 +58,7 @@ export async function GET() {
     const outputCost = (totalOutputTokens / 1_000_000) * outputCostPerMillion;
     const totalCost = inputCost + outputCost;
     const totalTokens = totalInputTokens + totalOutputTokens;
+
     return NextResponse.json(
       {
         totalTokens,
